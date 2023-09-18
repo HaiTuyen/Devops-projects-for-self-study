@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@2.12.0")
+  -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet"
+        type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <!-- example of injection point where you write your app template -->
+    <div id="q-app">
+
+        <div class="q-pa-md">
+            <q-toolbar class="bg-purple-8 text-white">
+                <q-btn flat icon="menu">
+                    <q-menu anchor="bottom left">
+                        <q-list>
+                            <q-item clickable v-ripple @click="page='homepage'">
+                                <q-item-section>Home</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-1'; categories='Programming Fundamentals'">
+                                <q-item-section>Programming Fundamentals</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-2'; categories='Web Development'">
+                                <q-item-section>Web Development</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-3'; categories='Mobile App Development'">
+                                <q-item-section>Mobile App Development</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple
+                                @click="page='subject-4'; categories='Data Science and Machine Learning'">
+                                <q-item-section>Data Science and Machine Learning</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-5'; categories='Game Development'">
+                                <q-item-section>Game Development</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-6'; categories='DevOps and Software Engineering'">
+                                <q-item-section>DevOps and Software Engineering</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-7'; categories='Cybersecurity'">
+                                <q-item-section>Cybersecurity</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-8'; categories='Blockchain and Cryptocurrency'">
+                                <q-item-section>Blockchain and Cryptocurrency</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple
+                                @click="page='subject-9'; categories='Artificial Intelligence and Robotics'">
+                                <q-item-section>Artificial Intelligence and Robotics</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-10'; categories='Cloud Computing and Big Data'">
+                                <q-item-section>Cloud Computing and Big Data</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='subject-11'; categories='Internet of Things (IoT)'">
+                                <q-item-section>Internet of Things (IoT)</q-item-section>
+                            </q-item>
+                            <q-item clickable v-ripple @click="page='cart'">
+                                <q-item-section>Cart</q-item-section>
+                            </q-item>
+                        </q-list>
+                    </q-menu>
+                </q-btn>
+                <q-toolbar-title>
+                    <strong>INFORMATION TECHNOLOGY COURSES</strong>
+                </q-toolbar-title>
+            </q-toolbar>
+        </div>
+
+
+
+        <!-- <p>{{search}}</p> -->
+
+
+        <q-tab-panels v-model="page" animated>
+            <q-tab-panel name="homepage">
+                <q-carousel animated v-model="slide" arrows navigation infinite :autoplay="3000" style="height: 500px">
+                    <q-carousel-slide name="1" img-src="img/ad-01.jpeg"></q-carousel-slide>
+                    <q-carousel-slide name="2" img-src="img/ad-02.jpeg"></q-carousel-slide>
+                    <q-carousel-slide name="3" img-src="img/ad-03.jpeg"></q-carousel-slide>
+                    <q-carousel-slide name="4" img-src="img/ad-04.jpeg"></q-carousel-slide>
+                </q-carousel>
+
+                <q-input label="Let's find some amazing courses" v-model="search"></q-input>
+                <q-tabs v-model="tab">
+                    <q-tab name="grid" label="Grid View"></q-tab>
+                    <q-tab name="list" label="List View"></q-tab>
+                </q-tabs>
+
+                <q-tab-panels v-model="tab" animated>
+                    <q-tab-panel name="grid">
+                        <div class="row q-gutter-lg">
+                            <q-card v-for="(x,y,z) in filterProducts(products)" style="max-width: 270px;">
+                                <q-card-section style="height: 200px;">
+                                    <q-img :src="x.url"></q-img>
+                                </q-card-section>
+
+                                <q-card-section class="q-pt-none" style="height: 150px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-card-section>
+
+                                <q-card-section class="q-pt-none" style="height:200px;">
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-card-section>
+                                <q-separator></q-separator>
+                                <q-card-actions align="center">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-card-actions>
+                            </q-card>
+                        </div>
+                    </q-tab-panel>
+
+                    <q-tab-panel name="list">
+                        <div class="q-pa-md">
+                            <q-list>
+                                <q-item v-for="(x,y,z) in filterProducts(products)">
+                                    <q-item-section style="max-width: 300px;">
+                                        <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                    </q-item-section>
+
+                                    <q-item-section style="max-width: 260px;">
+                                        <div class="text-h6">{{x.course}}</div>
+                                        <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                    </q-item-section>
+
+                                    <q-item-section>
+                                        <div class="text-subtitle1">{{x.subject}}</div>
+                                        <div class="text-caption text-grey">{{x.note}}</div>
+                                    </q-item-section>
+
+                                    <q-item-section style="max-width: 200px;">
+                                        <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                        </div>
+                    </q-tab-panel>
+                </q-tab-panels>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-1">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[0].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[0].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-2">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[1].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[1].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-3">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[2].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[2].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-4">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[3].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[3].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-5">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[4].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[4].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-6">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[5].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[5].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-7">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[6].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[6].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-8">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[7].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[7].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-9">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[8].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[8].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-10">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[9].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[9].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="subject-11">
+                <div class="q-pa-md">
+                    <div class="text-h4 text-bold text-amber-5">{{introduction[10].subject}}</div>
+                    <div class="text-subtitle1">{{introduction[10].content}}</div>
+                    <q-input label="Let's find some couses in this subject!" v-model="search"></q-input>
+                    <div class="row q-gutter-lg">
+                        <q-list>
+                            <q-item v-for="(x,y,z) in filterProducts(filterCategory)">
+                                <q-item-section style="max-width: 300px;">
+                                    <q-img :src="x.url" style="max-width: 300px;"></q-img>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 260px;">
+                                    <div class="text-h6">{{x.course}}</div>
+                                    <q-rating v-model="x.evaluate" size="20px"></q-rating>
+                                </q-item-section>
+
+                                <q-item-section>
+                                    <div class="text-subtitle1">{{x.subject}}</div>
+                                    <div class="text-caption text-grey">{{x.note}}</div>
+                                </q-item-section>
+
+                                <q-item-section style="max-width: 200px;">
+                                    <q-btn label="PURCHASE" text-color="red-8"></q-btn>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="cart" style="display: flex; justify-content: center;">
+                <div class="q-pa-md">
+                    <img src="img/we_will_back_soon.png" alt="" style="max-height: 400px;">
+                </div>
+            </q-tab-panel>
+
+        </q-tab-panels>
+
+
+
+
+    </div>
+
+    <!-- Add the following at the end of your body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/quasar.umd.prod.js"></script>
+
+    <script>
+        /*
+          Example kicking off the UI. Obviously, adapt this to your specific needs.
+          Assumes you have a <div id="q-app"></div> in your <body> above
+         */
+        const app = Vue.createApp({
+            setup() {
+                return {}
+            },
+
+            data() {
+                return {
+                    categories: '',
+                    slide: "1",
+                    page: 'homepage',
+                    search: '',
+                    tab: "grid",
+                    rating: 4,
+                    introduction: [
+                        {
+                            subject: "Programming Fundamentals",
+                            content: "The Programming Fundamentals courses are designed to provide you with a strong foundation in coding and computational thinking. You'll delve into essential concepts such as algorithms, data structures, and problem-solving techniques. Whether you're new to programming or looking to strengthen your skills, these courses will teach you how to write efficient code and tackle real-world coding challenges. Programming languages like Python, Java, and C++ will be your tools of choice as you embark on your programming journey."
+                        },
+                        {
+                            subject: "Web Development",
+                            content: "Web Development is at the heart of the digital age. Our courses begin with the basics, teaching you HTML and CSS to create and style web pages. As you progress, you'll dive deeper into JavaScript, jQuery, and responsive web design. Explore front-end development with popular frameworks like React, Angular, or Vue.js, and master back-end development using technologies like Node.js, Ruby on Rails, or Django. By the end of these courses, you'll have the skills to build dynamic, interactive web applications and websites."
+                        },
+                        {
+                            subject: "Mobile App Development",
+                            content: "Mobile App Development courses are your gateway to creating powerful and user-friendly mobile applications. Whether you want to develop for Android or iOS, our courses have you covered. You'll start with the fundamentals, learning Java or Kotlin for Android app development and Swift for iOS. If cross-platform development is your goal, explore technologies like React Native and Flutter. By the end, you'll be equipped to design, code, and deploy your own mobile apps to the app stores."
+                        },
+                        {
+                            subject: "Data Science and Machine Learning",
+                            content: "Data Science and Machine Learning courses will equip you with the skills needed to extract valuable insights from data and build intelligent systems. Begin with data analysis using Python, exploring libraries like NumPy and Pandas. Dive into machine learning fundamentals, covering supervised and unsupervised learning techniques. Take your knowledge further with deep learning, natural language processing (NLP), and computer vision. By the end of these courses, you'll be prepared to work with large datasets, implement machine learning models, and apply AI in various domains."
+                        },
+                        {
+                            subject: "Game Development",
+                            content: "Game Development courses cater to your passion for gaming and game design. You'll start with the basics of game design principles, understanding player engagement and interaction. Then, step into the world of game development using industry-standard engines like Unity and Unreal Engine. Create 2D and 3D games, design game mechanics, and optimize performance. These courses will prepare you to bring your gaming ideas to life and pursue a career in the gaming industry."
+                        },
+                        {
+                            subject: "DevOps and Software Engineering",
+                            content: "DevOps and Software Engineering courses are designed to prepare you for the world of software development and efficient project management. You'll master version control with Git, ensuring collaborative coding. Implement continuous integration and continuous deployment (CI/CD) pipelines to automate software delivery. Dive into cloud computing with AWS, Azure, or Google Cloud, and learn to deploy scalable applications. Additionally, you'll explore software testing, quality assurance, and agile methodologies, equipping you for a career in software engineering and DevOps."
+                        },
+                        {
+                            subject: "Cybersecurity",
+                            content: "Cybersecurity is a critical field in the digital age, and our courses will teach you how to protect digital assets and networks from threats. Start with the basics of cybersecurity fundamentals, understanding common threats and vulnerabilities. Dive into ethical hacking and penetration testing to identify and rectify security weaknesses. Explore network security, cryptography, and secure coding practices. Stay ahead of evolving cyber threats with these comprehensive courses."
+                        },
+                        {
+                            subject: "Blockchain and Cryptocurrency",
+                            content: "Blockchain and Cryptocurrency courses introduce you to the innovative world of decentralized technology. Learn the ins and outs of blockchain technology, including how it works and its potential applications beyond cryptocurrency. Develop smart contracts using languages like Solidity for Ethereum. Explore the exciting field of decentralized finance (DeFi) and understand how blockchain is revolutionizing various industries. These courses will provide you with the knowledge to participate in the blockchain ecosystem."
+                        },
+                        {
+                            subject: "Artificial Intelligence and Robotics",
+                            content: "Artificial Intelligence and Robotics courses take you on a journey into the realms of AI and intelligent machines. Study computer vision, teaching machines to understand and interpret images and videos. Explore natural language processing (NLP) to enable machines to understand and respond to human language. Dive into reinforcement learning for training autonomous agents. These courses empower you to build intelligent systems and robots that can perform tasks in diverse fields, from healthcare to manufacturing."
+                        },
+                        {
+                            subject: "Cloud Computing and Big Data",
+                            content: "Cloud Computing and Big Data courses equip you with the skills to leverage cloud technologies and handle large datasets efficiently. Learn to work with leading cloud service providers like AWS, Azure, and Google Cloud. Explore cloud-based database management, serverless computing, and containerization. Additionally, master big data processing with technologies like Hadoop and Spark. These courses prepare you to manage scalable and cost-effective cloud infrastructure while analyzing and deriving insights from big data."
+                        },
+                        {
+                            subject: "Internet of Things (IoT)",
+                            content: "The Internet of Things (IoT) is revolutionizing the way we interact with the physical world. Our IoT courses provide a comprehensive introduction to this exciting field. Begin with IoT fundamentals and explore the hardware components, including Arduino and Raspberry Pi. Dive into IoT protocols, security best practices, and data communication. Develop IoT applications, from home automation to industrial monitoring, and learn how to connect physical devices to the digital world."
+                        }
+                    ],
+                    products: [
+                        {
+                            id: 1,
+                            subject: "Programming Fundamentals",
+                            course: "Introduction to Programming Logic",
+                            price: 500,
+                            evaluate: 5,
+                            note: "Get started on your programming journey with this foundational course. Learn the basics of programming logic, algorithm design, and problem-solving techniques. Perfect for beginners.",
+                            url: "img/intro_to_programming.png"
+                        },
+                        {
+                            id: 2,
+                            subject: "Programming Fundamentals",
+                            course: "Programming with Python",
+                            price: 750,
+                            evaluate: 4.5,
+                            note: "Explore the versatile world of Python programming. Learn syntax, data types, and control structures to write Pythonic code. Ideal for beginners and those new to Python.",
+                            url: "img/python_programming.png"
+                        },
+                        {
+                            id: 3,
+                            subject: "Programming Fundamentals",
+                            course: "Programming with Java",
+                            price: 800,
+                            evaluate: 4.7,
+                            note: "Master the object-oriented paradigm with Java. Discover classes, objects, and inheritance. Develop Java applications and gain valuable skills for software development.",
+                            url: "img/java_programming.png"
+                        },
+                        {
+                            id: 4,
+                            subject: "Programming Fundamentals",
+                            course: "Programming with C++",
+                            price: 850,
+                            evaluate: 4.6,
+                            note: "Delve into the world of C++ programming. Learn about pointers, memory management, and object-oriented programming principles. Suitable for intermediate learners.",
+                            url: "img/cplusplus_programming.png"
+                        },
+                        {
+                            id: 5,
+                            subject: "Web Development",
+                            course: "HTML/CSS Fundamentals",
+                            price: 600,
+                            evaluate: 4.8,
+                            note: "Build a strong web development foundation by mastering HTML and CSS. Create and style web pages, understand layouts, and design responsive websites.",
+                            url: "img/html_css_fundamentals.png"
+                        },
+                        {
+                            id: 6,
+                            subject: "Web Development",
+                            course: "JavaScript and jQuery",
+                            price: 700,
+                            evaluate: 4.7,
+                            note: "Take your web development skills to the next level with JavaScript and jQuery. Add interactivity and dynamic features to your websites.",
+                            url: "img/javascript_jquery.png"
+                        },
+                        {
+                            id: 7,
+                            subject: "Web Development",
+                            course: "Front-End Development with React",
+                            price: 900,
+                            evaluate: 4.9,
+                            note: "Learn the popular React framework for building modern, interactive web applications. Create user interfaces and harness the power of React components.",
+                            url: "img/react_frontend.png"
+                        },
+                        {
+                            id: 8,
+                            subject: "Web Development",
+                            course: "Back-End Development with Node.js",
+                            price: 950,
+                            evaluate: 4.8,
+                            note: "Become a back-end developer with Node.js. Build server-side applications, handle requests, and create RESTful APIs.",
+                            url: "img/nodejs_backend.png"
+                        },
+                        {
+                            id: 9,
+                            subject: "Mobile App Development",
+                            course: "Android App Development with Java",
+                            price: 800,
+                            evaluate: 4.6,
+                            note: "Craft Android applications using Java. Understand Android's architecture, UI design, and app deployment. Ideal for aspiring Android developers.",
+                            url: "img/android_java.png"
+                        },
+                        {
+                            id: 10,
+                            subject: "Mobile App Development",
+                            course: "iOS App Development with Swift",
+                            price: 850,
+                            evaluate: 4.7,
+                            note: "Embark on your iOS app development journey with Swift. Learn iOS app design, coding, and app store submission. Suitable for iOS enthusiasts.",
+                            url: "img/ios_swift.png"
+                        },
+                        {
+                            id: 11,
+                            subject: "Mobile App Development",
+                            course: "Cross-Platform App Development with React Native",
+                            price: 900,
+                            evaluate: 4.8,
+                            note: "Create cross-platform mobile apps using React Native. Build once, deploy everywhere. Ideal for developers targeting both iOS and Android.",
+                            url: "img/react_native.png"
+                        },
+                        {
+                            id: 12,
+                            subject: "Data Science and Machine Learning",
+                            course: "Data Analysis with Python",
+                            price: 850,
+                            evaluate: 4.9,
+                            note: "Explore the world of data analysis with Python. Learn to clean, analyze, and visualize data using libraries like NumPy and Pandas. Essential for data enthusiasts and aspiring data scientists.",
+                            url: "img/data_analysis_python.png"
+                        },
+                        {
+                            id: 13,
+                            subject: "Data Science and Machine Learning",
+                            course: "Machine Learning Fundamentals",
+                            price: 900,
+                            evaluate: 4.8,
+                            note: "Master the fundamentals of machine learning. Understand supervised and unsupervised learning algorithms. Develop predictive models and make data-driven decisions.",
+                            url: "img/machine_learning_fundamentals.png"
+                        },
+                        {
+                            id: 14,
+                            subject: "Data Science and Machine Learning",
+                            course: "Deep Learning and Neural Networks",
+                            price: 950,
+                            evaluate: 4.9,
+                            note: "Dive deep into neural networks and deep learning. Build and train deep learning models for image recognition, natural language processing, and more.",
+                            url: "img/deep_learning_neural_networks.png"
+                        },
+                        {
+                            id: 15,
+                            subject: "Data Science and Machine Learning",
+                            course: "Natural Language Processing",
+                            price: 900,
+                            evaluate: 4.7,
+                            note: "Uncover the power of natural language processing (NLP). Analyze and understand human language, process text data, and create NLP applications.",
+                            url: "img/natural_language_processing.png"
+                        },
+                        {
+                            id: 16,
+                            subject: "Game Development",
+                            course: "Introduction to Game Design",
+                            price: 700,
+                            evaluate: 4.6,
+                            note: "Kickstart your journey into game design. Learn the fundamentals of game mechanics, storytelling, and player engagement. Ideal for aspiring game designers.",
+                            url: "img/intro_to_game_design.png"
+                        },
+                        {
+                            id: 17,
+                            subject: "Game Development",
+                            course: "Game Development with Unity",
+                            price: 950,
+                            evaluate: 4.9,
+                            note: "Create immersive 2D and 3D games with Unity, a leading game engine. Design game worlds, characters, and gameplay mechanics. Suitable for game development enthusiasts.",
+                            url: "img/unity_game_development.png"
+                        },
+                        {
+                            id: 18,
+                            subject: "Game Development",
+                            course: "Game Development with Unreal Engine",
+                            price: 1000,
+                            evaluate: 4.8,
+                            note: "Dive into Unreal Engine, a powerhouse for game development. Build stunning 3D games, explore advanced graphics, and create captivating gaming experiences.",
+                            url: "img/unreal_engine_game_development.png"
+                        },
+                        {
+                            id: 19,
+                            subject: "Game Development",
+                            course: "2D and 3D Game Development",
+                            price: 900,
+                            evaluate: 4.7,
+                            note: "Master the art of creating both 2D and 3D games. Explore the differences in design and mechanics, and become a versatile game developer.",
+                            url: "img/2d_3d_game_development.png"
+                        },
+                        {
+                            id: 20,
+                            subject: "DevOps and Software Engineering",
+                            course: "Version Control with Git",
+                            price: 600,
+                            evaluate: 4.9,
+                            note: "Gain expertise in version control with Git. Learn branching, merging, and collaborative coding. Essential for developers and software engineers.",
+                            url: "img/git_version_control.png"
+                        },
+                        {
+                            id: 21,
+                            subject: "DevOps and Software Engineering",
+                            course: "Continuous Integration and Continuous Deployment (CI/CD)",
+                            price: 750,
+                            evaluate: 4.8,
+                            note: "Automate software delivery with CI/CD pipelines. Streamline development workflows, test code, and deploy applications efficiently.",
+                            url: "img/cicd_pipeline.png"
+                        },
+                        {
+                            id: 22,
+                            subject: "Cybersecurity",
+                            course: "Cybersecurity Fundamentals",
+                            price: 800,
+                            evaluate: 4.9,
+                            note: "Master the fundamentals of cybersecurity. Learn about common threats, vulnerabilities, and security best practices. Ideal for beginners and those looking to enter the field.",
+                            url: "img/cybersecurity_fundamentals.png"
+                        },
+                        {
+                            id: 23,
+                            subject: "Cybersecurity",
+                            course: "Ethical Hacking and Penetration Testing",
+                            price: 950,
+                            evaluate: 4.8,
+                            note: "Become an ethical hacker and penetration tester. Learn to identify and rectify security weaknesses in systems and networks. Hands-on experience with real-world scenarios.",
+                            url: "img/ethical_hacking.png"
+                        },
+                        {
+                            id: 24,
+                            subject: "Cybersecurity",
+                            course: "Network Security",
+                            price: 850,
+                            evaluate: 4.7,
+                            note: "Explore the intricacies of network security. Learn to protect networks from cyber threats, implement firewalls, and secure data transmission.",
+                            url: "img/network_security.png"
+                        },
+                        {
+                            id: 25,
+                            subject: "Cybersecurity",
+                            course: "Cryptography",
+                            price: 750,
+                            evaluate: 4.6,
+                            note: "Uncover the science of cryptography. Understand encryption, decryption, and secure communication. Essential knowledge for securing digital assets.",
+                            url: "img/cryptography.png"
+                        },
+                        {
+                            id: 26,
+                            subject: "Blockchain and Cryptocurrency",
+                            course: "Introduction to Blockchain Technology",
+                            price: 600,
+                            evaluate: 4.7,
+                            note: "Begin your journey into the world of blockchain. Learn how blockchain works, its potential applications, and the impact it has on various industries.",
+                            url: "img/intro_to_blockchain.png"
+                        },
+                        {
+                            id: 27,
+                            subject: "Blockchain and Cryptocurrency",
+                            course: "Smart Contract Development with Solidity",
+                            price: 900,
+                            evaluate: 4.8,
+                            note: "Become a smart contract developer using Solidity, the language of Ethereum. Create self-executing contracts for various decentralized applications (DApps).",
+                            url: "img/solidity_smart_contracts.png"
+                        },
+                        {
+                            id: 28,
+                            subject: "Blockchain and Cryptocurrency",
+                            course: "Cryptocurrency and Decentralized Finance (DeFi)",
+                            price: 950,
+                            evaluate: 4.9,
+                            note: "Explore the world of cryptocurrencies and decentralized finance. Understand digital currencies, DeFi platforms, and how blockchain is changing finance.",
+                            url: "img/cryptocurrency_defi.png"
+                        },
+                        {
+                            id: 29,
+                            subject: "Artificial Intelligence and Robotics",
+                            course: "AI Fundamentals",
+                            price: 700,
+                            evaluate: 4.8,
+                            note: "Master the fundamentals of artificial intelligence. Explore AI concepts, algorithms, and applications in various domains, from healthcare to finance.",
+                            url: "img/ai_fundamentals.png"
+                        },
+                        {
+                            id: 30,
+                            subject: "Artificial Intelligence and Robotics",
+                            course: "Computer Vision",
+                            price: 850,
+                            evaluate: 4.7,
+                            note: "Dive into computer vision, enabling machines to understand and interpret images and videos. Learn object detection, image segmentation, and facial recognition.",
+                            url: "img/computer_vision.png"
+                        },
+                        {
+                            id: 31,
+                            subject: "Artificial Intelligence and Robotics",
+                            course: "Natural Language Processing",
+                            price: 800,
+                            evaluate: 4.8,
+                            note: "Explore natural language processing (NLP) to enable machines to understand and respond to human language. Build chatbots, language models, and more.",
+                            url: "img/nlp.png"
+                        },
+                        {
+                            id: 32,
+                            subject: "Artificial Intelligence and Robotics",
+                            course: "Reinforcement Learning",
+                            price: 900,
+                            evaluate: 4.9,
+                            note: "Dive into reinforcement learning, a subfield of AI focused on training autonomous agents. Learn about Markov decision processes, Q-learning, and more.",
+                            url: "img/reinforcement_learning.png"
+                        },
+                        {
+                            id: 33,
+                            subject: "Cloud Computing and Big Data",
+                            course: "Cloud Services (AWS, Azure, Google Cloud)",
+                            price: 750,
+                            evaluate: 4.7,
+                            note: "Master the leading cloud services from AWS, Azure, and Google Cloud. Learn to deploy and manage cloud infrastructure for scalable applications.",
+                            url: "img/cloud_services.png"
+                        },
+                        {
+                            id: 34,
+                            subject: "Cloud Computing and Big Data",
+                            course: "Big Data Technologies (Hadoop, Spark)",
+                            price: 850,
+                            evaluate: 4.8,
+                            note: "Dive into big data technologies such as Hadoop and Spark. Learn to process, analyze, and derive insights from large datasets. Ideal for data professionals.",
+                            url: "img/big_data.png"
+                        },
+                        {
+                            id: 35,
+                            subject: "Cloud Computing and Big Data",
+                            course: "Cloud-based Database Management",
+                            price: 750,
+                            evaluate: 4.7,
+                            note: "Explore cloud-based database solutions. Learn to design, implement, and manage databases in the cloud, ensuring data security and scalability.",
+                            url: "img/cloud_database.png"
+                        },
+                        {
+                            id: 36,
+                            subject: "Cloud Computing and Big Data",
+                            course: "Serverless Computing",
+                            price: 800,
+                            evaluate: 4.8,
+                            note: "Master serverless computing in the cloud. Build and deploy applications without managing servers. Optimize cost and scalability.",
+                            url: "img/serverless_computing.png"
+                        },
+                        {
+                            id: 37,
+                            subject: "Internet of Things (IoT)",
+                            course: "IoT Fundamentals",
+                            price: 600,
+                            evaluate: 4.6,
+                            note: "Begin your IoT journey with fundamental concepts. Explore IoT applications, devices, and use cases. Ideal for beginners in IoT.",
+                            url: "img/iot_fundamentals.png"
+                        },
+                        {
+                            id: 38,
+                            subject: "Internet of Things (IoT)",
+                            course: "IoT Hardware (Arduino, Raspberry Pi)",
+                            price: 750,
+                            evaluate: 4.7,
+                            note: "Learn the hardware side of IoT with Arduino and Raspberry Pi. Build IoT devices, connect sensors, and develop IoT prototypes.",
+                            url: "img/iot_hardware.png"
+                        },
+                        {
+                            id: 39,
+                            subject: "Internet of Things (IoT)",
+                            course: "IoT Protocols and Security",
+                            price: 700,
+                            evaluate: 4.8,
+                            note: "Understand IoT protocols and security measures. Ensure secure communication between IoT devices and learn to protect data in IoT networks.",
+                            url: "img/iot_security.png"
+                        },
+                        {
+                            id: 40,
+                            subject: "Internet of Things (IoT)",
+                            course: "IoT Application Development",
+                            price: 850,
+                            evaluate: 4.9,
+                            note: "Put your IoT knowledge into practice. Develop real-world IoT applications, from home automation to industrial monitoring. Bring IoT ideas to life.",
+                            url: "img/iot_application.png"
+                        }
+                    ],
+                }
+            },
+
+            methods: {
+                filterProducts: function (product_list) {
+                    let filter_list = product_list.filter((x, y, z) => {
+                        let check = x.subject.toLowerCase().includes(this.search.toLowerCase()) ||
+                            x.course.toLowerCase().includes(this.search.toLowerCase()) ||
+                            x.note.toLowerCase().includes(this.search.toLowerCase());
+                        return check;
+                    })
+                    return filter_list;
+                },
+
+
+            },
+
+            computed: {
+                filterCategory: function () {
+                    let filter_list = this.products.filter(x => {
+                        return x.subject == this.categories;
+                    })
+                    console.log(filter_list);
+                    return filter_list;
+                }
+            }
+
+
+        })
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

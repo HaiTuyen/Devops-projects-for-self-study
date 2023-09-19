@@ -13,7 +13,7 @@ This project marks my inaugural self-guided DevOps project, encompassing a step-
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 
-## Setting up a ubuntu server
+## [Setting up a ubuntu server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
 
 The purpose of this step is to deploy a Virtual Machine on a cloud platform, and in this project, Google Cloud is utilized. Following that, we will set up the Ubuntu Server operating system on this virtual machine.
 

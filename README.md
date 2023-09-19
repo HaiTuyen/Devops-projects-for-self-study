@@ -241,3 +241,10 @@ Then, use SCP to copy website files into the new directory: `/var/www/devopsproj
 ## Accquiring a Let's Encrypt certificate to enable SSL encrytion for the hosted websites.
 
 Follow the instruction of [this site](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04#step-2-confirming-nginx-s-configuration), they will help you get a free SSL certificate for your website.
+
+
+
+https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
+
+
+

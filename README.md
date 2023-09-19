@@ -205,7 +205,7 @@ By completing these steps, you'll have successfully associated your domain name 
 In this project, I bought as domain name: **devopsroject.top**
 
 
-## Host multiple websites on a single IP address.
+## [Host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
 
 Nginx can host more than one domain on the same web server by using server blocks. To make a new server block, create a new directory for our content in  `/var/www/` .
 

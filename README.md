@@ -21,7 +21,7 @@ The purpose of this step is to deploy a Virtual Machine on a cloud platform, and
 
 ## Accessing the server securely via SSH protocol and configuring the server
 
-##### Accessing the server
+### Accessing the server
 
 To accessing the server, there are several ways:
 
@@ -46,7 +46,7 @@ ssh <server_external_IP>
 
 During the first-time connection, you might receive a warning, but don't worry; simply type 'yes'. Afterward, you should be able to connect to the server succesfully.
 
-##### Configuring the server
+### Configuring the server
 
 Next, it's essential to create a new user that have many administrative privileges to facilitate various tasks while minimizing security risk. This user is commonly referred to as a non-root user.
 
@@ -60,13 +60,13 @@ sudo adduser <username>
 
 After adding the new user, exit the current SSH connection session:
 
-```bash
+```plaintext
 exit
 ```
 
 Reconnect to the server using the new username and the server's external Ip address:
 
-```bash
+```plaintext
 ssh <new_username>@<server_external_IP>
 ```
 
@@ -158,4 +158,86 @@ Now, open your browser and enter the external IP of your server. If you see some
 
 ![1695108016796](image/README/1695108016796.png)
 
-## Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol).
+## Transferring website files to the Nginx directory using SCP.
+
+Okay, now you need to use the SCP protocol to copy website files from your computer to the `/var/www/html/` directory on server. Nginx serves its contents from this directory by default. When you use the `tree` command in this directory, you will see a file with name ` index.nginx-debian.html ` which have the content you saw in the previous step.
+
+Now, copy all files in the `website_files` directory into the `/var/www/html/` directory using SCP protocol.
+
+```
+scp -r ~/<local_address>/* <username>@<server_external_ip>:/var/www/html/
+```
+
+If you encounter a "permission denied" error during the SCP transfer, you may need to adjust the ownership and permissions of the `/var/www/html/` directory on the server.
+
+```
+// Change ownership of this directory to the non-root user
+sudo chown <username>:username> /var/www/html/
+
+// Change files permission of this directory
+sudo chmod 777 <remote_folder>
+
+```
+
+After adjusting the ownership and permissions, try transferring the website files again using SCP protocol:
+
+```
+scp -r ~/<local_address>/* <username>@<server_external_ip>:/var/www/html/
+```
+
+If you see something like this, the website files should be successfully copied:
+
+![1695109761789](image/README/1695109761789.png)
+
+Now, enter the external IP address of server, you will see the website content
+
+
+## Associating the server's external IP address with a domain name
+
+To link a domain name to your server's IP address, follow these steps:
+
+1. Buy a domain from a domain provider.
+3. Access the domain provider's website and log in to your account.
+4. In the domain management or DNS settings section, add an A record that maps your domain to your server's IP address.
+
+By completing these steps, you'll have successfully associated your domain name with your server's IP address, allowing visitors to access your server using the domain name you've purchased.
+
+In this project, I bought as domain name: **devopsroject.top**
+
+
+## Host multiple websites on a single IP address.
+
+Nginx can host more than one domain on the same web server by using server blocks. To make a new server block, create a new directory for our content in  `/var/www/` .
+
+Create a new directory using `mkdir` (make directories) command with `-p` flag (create parent directories)
+
+```
+cd /var/www
+sudo mkdir -p devopsproject.top/html
+```
+
+Duplicate the default configuration file and names the new configuration file as `devopsproject.top`. All the configuration files locate in the `/etc/nginx/sites-available/` directory
+
+```
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/devopsproject.top
+```
+
+Now, use nano to edit new configuration file in the `/etc/nginx/sites-available/` directory. 
+
+```
+sudo nano /etc/nginx/sites-available/devopsproject.top
+```
+
+Copy the content of `devopsproject.top.txt` file in this repository and paste into the current nano editor.
+
+Finally, to enable this server block, we need to create a symlink (symbolic link) of new configuration file and store it in the `/etc/nginx/sites-enabled` directory. 
+
+```
+sudo ln -s /etc/nginx/sites-available/devopsproject.top /etc/nginx/sites-enabled/
+```
+
+Then, use SCP to copy website files into the new directory: `/var/www/devopsproject/html/`
+
+## Accquiring a Let's Encrypt certificate to enable SSL encrytion for the hosted websites.
+
+Follow the instruction of [this site](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04#step-2-confirming-nginx-s-configuration), they will help you get a free SSL certificate for your website.

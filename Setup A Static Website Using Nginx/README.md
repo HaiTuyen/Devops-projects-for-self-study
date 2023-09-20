@@ -2,24 +2,24 @@
 
 This project marks my inaugural self-guided DevOps project, encompassing a step-by-step process for establishing a website. The project entails:
 
-- [Setting up an Ubuntu Server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setting-up-a-ubuntu-server).
-- [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
-- [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#initializing-firewall-rules-for-enhanced-security).
-- [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#installing-and-deploying-nginx-as-a-web-server).
-- [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
-- [Registering a DNS (Domain Name System) account and associating the server's external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
-- [Leveraging Nginx's Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#host-multiple-websites-on-a-single-ip-address).
-- [Accquiring a Let's Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
+- [Setting up an Ubuntu Server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setting-up-a-ubuntu-server).
+- [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
+- [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#initializing-firewall-rules-for-enhanced-security).
+- [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#installing-and-deploying-nginx-as-a-web-server).
+- [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
+- [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
+- [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
+- [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 
-## [Setting up a ubuntu server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Setting up a ubuntu server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 The purpose of this step is to deploy a Virtual Machine on a cloud platform, and in this project, Google Cloud is utilized. Following that, we will set up the Ubuntu Server operating system on this virtual machine.
 
 ![1695092965829](image/README/1695092965829.png)
 
-## [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project) 
+## [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 ### Accessing the server
 
@@ -70,7 +70,7 @@ Reconnect to the server using the new username and the server's external Ip addr
 ssh <new_username>@<server_external_IP>
 ```
 
-## [Initializing firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Initializing firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 To implement restricted access to specific services on our server, we can employ the UFW (Uncomplicated Firewall) to manage and control access. In this context, we will configure UFW to permit access to OpenSSH, which is the service we utilize for connecting to the server.
 
@@ -98,7 +98,7 @@ When prompted, confirm the action by entering `y` to complete the process. To ch
 sudo ufw status
 ```
 
-## [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 To begin the installation of Nginx using the `apt` package manager, it's essential to refresh the local package cache by checking the configured software repositories for any updates or new packages. To perform this update, use this following command:
 
@@ -158,9 +158,9 @@ Now, open your browser and enter the external IP of your server. If you see some
 
 ![1695108016796](image/README/1695108016796.png)
 
-## [Transferring website files to the Nginx directory using SCP](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Transferring website files to the Nginx directory using SCP](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
-Okay, now you need to use the SCP protocol to copy website files from your computer to the `/var/www/html/` directory on server. Nginx serves its contents from this directory by default. When you use the `tree` command in this directory, you will see a file with name ` index.nginx-debian.html ` which have the content you saw in the previous step.
+Okay, now you need to use the SCP protocol to copy website files from your computer to the `/var/www/html/` directory on server. Nginx serves its contents from this directory by default. When you use the `tree` command in this directory, you will see a file with name `index.nginx-debian.html` which have the content you saw in the previous step.
 
 Now, copy all files in the `website_files` directory into the `/var/www/html/` directory using SCP protocol.
 
@@ -191,21 +191,19 @@ If you see something like this, the website files should be successfully copied:
 
 Now, enter the external IP address of server, you will see the website content
 
-
-## [Associating the server's external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 To link a domain name to your server's IP address, follow these steps:
 
 1. Buy a domain from a domain provider.
-3. Access the domain provider's website and log in to your account.
-4. In the domain management or DNS settings section, add an A record that maps your domain to your server's IP address.
+2. Access the domain provider's website and log in to your account.
+3. In the domain management or DNS settings section, add an A record that maps your domain to your server's IP address.
 
 By completing these steps, you'll have successfully associated your domain name with your server's IP address, allowing visitors to access your server using the domain name you've purchased.
 
 In this project, I bought as domain name: **devopsroject.top**
 
-
-## [Host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 Nginx can host more than one domain on the same web server by using server blocks. To make a new server block, create a new directory for our content in  `/var/www/` .
 
@@ -222,7 +220,7 @@ Duplicate the default configuration file and names the new configuration file as
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/devopsproject.top
 ```
 
-Now, use nano to edit new configuration file in the `/etc/nginx/sites-available/` directory. 
+Now, use nano to edit new configuration file in the `/etc/nginx/sites-available/` directory.
 
 ```
 sudo nano /etc/nginx/sites-available/devopsproject.top
@@ -230,7 +228,7 @@ sudo nano /etc/nginx/sites-available/devopsproject.top
 
 Copy the content of `devopsproject.top.txt` file in this repository and paste into the current nano editor.
 
-Finally, to enable this server block, we need to create a symlink (symbolic link) of new configuration file and store it in the `/etc/nginx/sites-enabled` directory. 
+Finally, to enable this server block, we need to create a symlink (symbolic link) of new configuration file and store it in the `/etc/nginx/sites-enabled` directory.
 
 ```
 sudo ln -s /etc/nginx/sites-available/devopsproject.top /etc/nginx/sites-enabled/
@@ -238,13 +236,8 @@ sudo ln -s /etc/nginx/sites-available/devopsproject.top /etc/nginx/sites-enabled
 
 Then, use SCP to copy website files into the new directory: `/var/www/devopsproject/html/`
 
-## [Accquiring a Let's Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx#setup-a-static-website-using-niginx-project)
+## [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 Follow the instruction of [this site](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04#step-2-confirming-nginx-s-configuration), they will help you get a free SSL certificate for your website.
 
-
-
 https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
-
-
-

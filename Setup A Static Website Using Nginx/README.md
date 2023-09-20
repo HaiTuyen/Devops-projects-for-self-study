@@ -2,14 +2,14 @@
 
 This project marks my inaugural self-guided DevOps project, encompassing a step-by-step process for establishing a website. The project entails:
 
-- [Setting up an Ubuntu Server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setting-up-a-ubuntu-server).
-- [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
-- [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#initializing-firewall-rules-for-enhanced-security).
-- [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#installing-and-deploying-nginx-as-a-web-server).
-- [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
-- [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
-- [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
-- [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
+1. [Setting up an Ubuntu Server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setting-up-a-ubuntu-server).
+1. [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
+1. [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#initializing-firewall-rules-for-enhanced-security).
+1. [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#installing-and-deploying-nginx-as-a-web-server).
+1. [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
+1. [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
+1. [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
+1. [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Setup-A-Static-Website-Using-Nginx/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 

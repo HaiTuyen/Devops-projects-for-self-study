@@ -5,7 +5,7 @@ server {
     server_name devopsproject.top www.devopsproject.top;
 
     root /var/www/devopsproject.top/html;
-    index index.html 
+    index index.html;
 
     location / {
         try_files $uri $uri/ =404;

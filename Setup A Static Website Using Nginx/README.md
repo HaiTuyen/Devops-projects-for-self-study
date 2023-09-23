@@ -3,13 +3,13 @@
 This project marks my inaugural self-guided DevOps project, encompassing a step-by-step process for establishing a website. The project entails:
 
 1. [Setting up an Ubuntu Server](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setting-up-a-ubuntu-server).
-1. [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
-1. [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#initializing-firewall-rules-for-enhanced-security).
-1. [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#installing-and-deploying-nginx-as-a-web-server).
-1. [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
-1. [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
-1. [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
-1. [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
+2. [Accessing the server securely via SSH protocol and configuring the server](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accessing-the-server-securely-via-ssh-protocol-and-configuring-the-server).
+3. [Initiating firewall rules for enhanced security](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#initializing-firewall-rules-for-enhanced-security).
+4. [Installing and deploying Nginx as a web server](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#installing-and-deploying-nginx-as-a-web-server).
+5. [Transferring website files (including .html, .css, .js, etc.) to the Nginx /var/www/ directory using SCP (Secure Copy Protocol)](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#transferring-website-files-to-the-nginx-directory-using-scp).
+6. [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
+7. [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
+8. [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 
@@ -241,3 +241,144 @@ Then, use SCP to copy website files into the new directory: `/var/www/devopsproj
 Follow the instruction of [this site](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04#step-2-confirming-nginx-s-configuration), they will help you get a free SSL certificate for your website.
 
 https://github.com/HaiTuyen/Devops-projects-for-self-study/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
+
+## Using self-signed SSL/TLS certificate instead
+
+### Remove current certificate
+
+After obtaining a free SSL/TLS certificate from Let's Encrypt, a Certificate Authority (CA), you can remove it to try another method: using self-signed SSL/TLS certificate.
+
+To remove current certificate, execute the following command:
+
+```
+sudo certbot delete --cert-name devopsproject.top
+```
+
+You may receive an error when reloading, restarting, stopping or starting the Nginx service. If you do, please read the issue I created in the Issue session abd follow the instructions to fix the error.
+
+### On server, create your own root Certificate Authority (CA)
+
+To begin, create a directory named `openssl` in `/etc/ssl/` to store all of necessary files.
+
+```
+cd /etc/ssl/
+sudo mkdir openssl
+cd openssl/
+```
+
+A Certificate Authority (CA) must have its own certificate and private key. To generate both of them simultaneously, execute the following command:
+
+```
+sudo openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout /etc/ssl/openssl/ca-key.pem -out ca-cert.pem -subj "/C=VN/ST=Ho Chi Minh/L=Ho CHi Minh City/O=The CA/OU=DevOps Team/CN=ca_domain_name/emailAddress=CA_domain_name@gmail.com"
+```
+
+This command used to generate a self-signed X.509 certificate (`.pem` files) for a Certificate Authority (CA). The generated CA certificate can be used to sign other certificates, such as SSL/TLS server or client certificates.
+
+Here's a breakdown of the command and its options:
+
+* `openssl req`: This is the OpenSSL command for generating certificate requests and self-signed certificates.
+* `-x509`: This option specifies that you want to create a self-signed certificate.
+* `-newkey rsa:4096`: This option generates a new RSA private key with a key size of 4096 bits.
+* `-days 365`: This sets the validity period of the certificate to 365 days (1 year).
+* `-nodes`: This option specifies that you don't want to encrypt the private key with a passphrase.
+* `-keyout ca-key.pem`: This specifies the filename for the private key, which will be stored in `ca-key.pem`.
+* `-out ca-cert.pem`: This specifies the filename for the self-signed CA certificate, which will be stored in `ca-cert.pem`.
+* `-subj`: This option allows you to provide subject information for the certificate. The subject information you provided includes:
+  * `/C=VN`: Country Name (Vietnam)
+  * `/ST=Ho Chi Minh`: State or Province Name (Ho Chi Minh)
+  * `/L=Ho Chi Minh City`: Locality Name (Ho Chi Minh City)
+  * `/O=The CA`: Organization Name (The CA)
+  * `/OU=DevOps Team`: Organizational Unit Name (DevOps Team)
+  * `/CN=CA_domain_name`: Common Name (the CA's domain name or IP address). Type whatever you want, it's not important!
+  * `/emailAddress=CA_domain_name@gmail.com`: Email Address (a contact email associated with the certificate)
+
+After running this command, you will have two files:
+
+* `ca-key.pem`: This file contains the private key of the CA.
+* `ca-cert.pem`: This file contains the self-signed CA certificate.
+
+You can then use this CA certificate and private key to sign other certificates, such as server or client certificates, for your domain or subdomains. These signed certificates can be used for securing communication over HTTPS, for example.
+
+To read the certificate, use the following command:
+
+```plaintext
+openssl x509 -in ca-cert.pem -noout -text
+```
+
+### On server, generate web server's private key and Certificate Signing Request (CSR)
+
+To genrate both web server's private key and CSR, execute the following command:
+
+```
+sudo openssl req -newkey rsa:4096 -nodes -keyout server-key.pem -out server-req.pem -subj "/C=VN/ST=Quang Nam/L=Hoi An/O=Dylan Holdings/OU=DevOps/CN=devopsproject.top/emailAddress=devopsproject.top@gmail.com"
+```
+
+Here's a breakdown of the command and its options:
+
+* `sudo openssl req`: This is the OpenSSL command for generating a certificate signing request (CSR).
+* `-newkey rsa:4096`: This option generates a new RSA private key with a key size of 4096 bits.
+* `-nodes`: This option specifies that you don't want to encrypt the private key with a passphrase.
+* `-keyout server-key.pem`: This specifies the filename for the private key, which will be stored in `server-key.pem`.
+* `-out server-req.pem`: This specifies the filename for the CSR, which will be stored in `server-req.pem`.
+* `-subj`: This option allows you to provide subject information for the CSR. The subject information you provided includes:
+  * `/C=VN`: Country Name (Vietnam)
+  * `/ST=Quang Nam`: State or Province Name (Quang Nam)
+  * `/L=Hoi An`: Locality Name (Hoi An)
+  * `/O=Dylan Holdings`: Organization Name (Dylan Holdings)
+  * `/OU=DevOps`: Organizational Unit Name (DevOps)
+  * `/CN=devopsproject.top`: Common Name (CN) for your domain (`devopsproject.top`). This content must match the domain name associated with your web server's external IP address.
+  * `/emailAddress=devopsproject.top@gmail.com`: Email Address (a contact email associated with the CSR)
+
+After running this command, you will have two files:
+
+* `server-key.pem`: This file contains the private key for your server or service.
+* `server-req.pem`: This file contains the certificate signing request (CSR) that you can send to a Certificate Authority (CA) to obtain a signed certificate for your server.
+
+You would typically send the CSR to a CA (your own CA) to get a signed certificate, which can then be used to secure your server or service, such as for setting up HTTPS.
+
+### On server, use your CA to sign the web server' CSR
+
+A certificate can be used for multiple websites with different domain names. We can do that by specifying the Subject Alternative Name extension when signing the certificate request.
+
+Let's create a configuration file named `server-ext.cnf` :
+
+```
+sudo nano server-ext.cnf
+```
+
+Then paste this code into the editor:
+
+```
+subjectAltName=DNS:*.devopsproject.top,IP:0.0.0.0
+```
+
+* `DNS:*.devopsproject.top`: This indicates that the certificate is valid for all subdomains of `devopsproject.top` due to the use of the wildcard asterisk (`*`). For example, it would cover `www.devopsproject.top`, `api.devopsproject.top`, etc. This is useful for securing multiple subdomains under the same certificate.
+* `IP:0.0.0.0`: This specifies that the certificate can be used for the IP address `0.0.0.0`. It can be useful when develop on localhost.
+
+To use the CA's private key to sign web server's CSR and get back the signed certificate, execute the following command:
+
+```
+sudo openssl x509 -req -in server-req.pem -days 60 -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile server-ext.cnf
+```
+
+Here's a breakdown of the command and its options:
+
+* `sudo openssl x509`: This is the OpenSSL command for working with X.509 certificates.
+* `-req`: This option specifies that you are working with a CSR (certificate signing request) provided with the `-in` option.
+* `-in server-req.pem`: This specifies the input CSR file, which is `server-req.pem` in your case.
+* `-days 60`: This option sets the validity period of the generated server certificate to 60 days. You can adjust the number of days according to your certificate's intended lifespan.
+* `-CA ca-cert.pem`: This specifies the CA certificate that will be used to sign the CSR. `ca-cert.pem` is the CA certificate file.
+* `-CAkey ca-key.pem`: This specifies the private key of the CA used for signing the CSR. `ca-key.pem` is the CA private key file.
+* `-CAcreateserial`: This option tells OpenSSL to create a serial number file (`ca-cert.srl` by default) if it doesn't already exist. This file is used to keep track of serial numbers for certificates issued by the CA.
+* `-out server-cert.pem`: This specifies the output file where the signed server certificate will be saved. In this case, it's `server-cert.pem`.
+* `-extfile server-ext.cnf`: This option allows you to specify an external configuration file (`server-ext.cnf`) that contains certificate extensions. Extensions can include additional properties like Subject Alternative Names (SANs) and other custom settings for the certificate.
+
+After running this command, you will have generated a server certificate (`server-cert.pem`) signed by the CA certificate (`ca-cert.pem`). This server certificate can be used to secure your server or service, such as setting up HTTPS for a web server.
+
+### On server, verify the certificate
+
+To verify if a certificate is valid or not. We can do that with the [openssl verify](https://man.openbsd.org/openssl.1#verify) command:
+
+```
+openssl verify -CAfile ca-cert.pem server-cert.pem
+```

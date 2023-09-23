@@ -192,7 +192,7 @@ If you see something like this, the website files should be successfully copied:
 
 Now, enter the external IP address of server, you will see the website content
 
-## [Associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
+## [Registering a DNS (Domain Name System) account and associating the server&#39;&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 To link a domain name to your server's IP address, follow these steps:
 
@@ -204,7 +204,7 @@ By completing these steps, you'll have successfully associated your domain name 
 
 In this project, I bought as domain name: **devopsroject.top**
 
-## [Host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
+## [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 Nginx can host more than one domain on the same web server by using server blocks. To make a new server block, create a new directory for our content in  `/var/www/` .
 
@@ -242,7 +242,6 @@ Then, use SCP to copy website files into the new directory: `/var/www/devopsproj
 Follow the instruction of [this site](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04#step-2-confirming-nginx-s-configuration), they will help you get a free SSL certificate for your website.
 
 https://github.com/HaiTuyen/Devops-projects-for-self-study/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
-
 
 ## [Using self-signed SSL/TLS certificate instead](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
@@ -414,7 +413,7 @@ sudo nano /etc/nginx/snippets/ssl-params.conf
 
 ```
 
-Within this file, paste the following content into it: 
+Within this file, paste the following content into it:
 
 ```
 # from https://cipherli.st/
@@ -478,7 +477,6 @@ server {
 
 ```
 
-
 * In the first server block, the `return` directive is used to issue a 301 (permanent) redirect to the corresponding HTTPS version of the URL (`https://$server_name$request_uri`) when someone accesses the site over HTTP. This ensures that all traffic is redirected to the HTTPS version for secure communication.
 * The second server block includes SSL-related configuration files (`snippets/self-signed.conf` and `snippets/ssl-params.conf`) which presumably contain SSL certificate and security settings.
 
@@ -490,7 +488,7 @@ To check for any syntax errors in our files, execute the following command:
 sudo nginx -t
 ```
 
-You will receive a warning about "ssl_stapling" being ignored. 
+You will receive a warning about "ssl_stapling" being ignored.
 
 ![1695484738857](image/README/1695484738857.png)
 
@@ -508,7 +506,7 @@ Let's open Firefox and enter: `www.devopsproject.top`
 
 ![1695485311833](image/README/1695485311833.png)
 
-You will encouter a warning from the browser. This is expected and normal because the website's certificate is not issued by a trusted certificate authority (CA). To fix this, we need to import our root CA's certificate that we created at the begining. 
+You will encouter a warning from the browser. This is expected and normal because the website's certificate is not issued by a trusted certificate authority (CA). To fix this, we need to import our root CA's certificate that we created at the begining.
 
 To do this, we need the `ca-cert.pem` file, which is the certificate of our root CA. To transfer this file from server to the client machine, use the following command:
 

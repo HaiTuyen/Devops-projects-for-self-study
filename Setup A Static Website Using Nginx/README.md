@@ -10,7 +10,7 @@ This project marks my inaugural self-guided DevOps project, encompassing a step-
 6. [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
 7. [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
 8. [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
-9. Using self-signed SSL/TLS certificate instead.
+9. [Using self-signed SSL/TLS certificate instead.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#using-self-signed-ssltls-certificate-instead)
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 
@@ -244,7 +244,7 @@ Follow the instruction of [this site](https://www.digitalocean.com/community/tut
 https://github.com/HaiTuyen/Devops-projects-for-self-study/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
 
 
-## Using self-signed SSL/TLS certificate instead
+## [Using self-signed SSL/TLS certificate instead](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#setup-a-static-website-using-niginx-project)
 
 ### Remove current certificate
 

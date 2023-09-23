@@ -10,6 +10,7 @@ This project marks my inaugural self-guided DevOps project, encompassing a step-
 6. [Registering a DNS (Domain Name System) account and associating the server&#39;s external IP address with a domain name](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#associating-the-servers-external-ip-address-with-a-domain-name).
 7. [Leveraging Nginx&#39;s Server Block feature to host multiple websites on a single IP address](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#host-multiple-websites-on-a-single-ip-address).
 8. [Accquiring a Let&#39;s Encrypt certificate to enable SSL encrytion for the hosted websites](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20A%20Static%20Website%20Using%20Nginx#accquiring-a-lets-encrypt-certificate-to-enable-ssl-encrytion-for-the-hosted-websites).
+9. Using self-signed SSL/TLS certificate instead.
 
 This project serves as an educational exercise, covering various aspects of web hosting and server management within a DevOps context.
 
@@ -242,6 +243,7 @@ Follow the instruction of [this site](https://www.digitalocean.com/community/tut
 
 https://github.com/HaiTuyen/Devops-projects-for-self-study/assets/88772805/007b9321-30ca-4e89-b141-573f9cbbf03e
 
+
 ## Using self-signed SSL/TLS certificate instead
 
 ### Remove current certificate
@@ -382,3 +384,143 @@ To verify if a certificate is valid or not. We can do that with the [openssl ver
 ```
 openssl verify -CAfile ca-cert.pem server-cert.pem
 ```
+
+### On server, configure Nginx to use the SSL/TLS certificate
+
+**First**, we need to create a configuration snippet containing our SSL key and certificate file locations:
+
+```plaintext
+cd /etc/nginx/
+sudo mkdir snippets && cd snippets
+sudo nano /etc/nginx/snippets/self-signed.conf
+```
+
+Within this file, we just need to set the `ssl_certificate` directive to our certificate file and the `ssl_certificate_key` to the associated key:
+
+```
+# This is the content for self-singed.conf file
+ssl_certificate /etc/ssl/openssl/server-cert.pem;
+ssl_certificate_key /etc/ssl/openssl/server-key.pem;
+```
+
+**Second**, we need to create a configuration snippet containing strong SSL settings that can be used with any certificates in the future
+
+```
+# Create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients
+sudo openssl dhparam -out /etc/ssl/openssl/dhparam.pem 2048
+
+# Create a snippet containing strong SSL settings
+sudo nano /etc/nginx/snippets/ssl-params.conf
+
+```
+
+Within this file, paste the following content into it: 
+
+```
+# from https://cipherli.st/
+# and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+ssl_ecdh_curve secp384r1;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling on;
+ssl_stapling_verify on;
+resolver 8.8.8.8 8.8.4.4 valid=300s;
+resolver_timeout 5s;
+# Disable preloading HSTS for now.  You can use the commented out header line that includes
+# the "preload" directive if you understand the implications.
+#add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+add_header X-Frame-Options DENY;
+add_header X-Content-Type-Options nosniff;
+
+ssl_dhparam /etc/ssl/openssl/dhparam.pem;
+
+```
+
+**Finally**, adjust the Nginx configuration file to use SSL/TLS certificate:
+
+```
+sudo nano /etc/nginx/sites-available/devopsproject.top
+```
+
+Revise the configuration file so that it looks like this:
+
+```
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name devopsproject.top www.devopsproject.top;
+    return 301 https://$server_name$request_uri;
+}
+
+
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+
+    server_name devopsproject.top www.devopsproject.top;
+    root /var/www/devopsproject.top/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+```
+
+
+* In the first server block, the `return` directive is used to issue a 301 (permanent) redirect to the corresponding HTTPS version of the URL (`https://$server_name$request_uri`) when someone accesses the site over HTTP. This ensures that all traffic is redirected to the HTTPS version for secure communication.
+* The second server block includes SSL-related configuration files (`snippets/self-signed.conf` and `snippets/ssl-params.conf`) which presumably contain SSL certificate and security settings.
+
+### Restart Nginx to implement our new changes
+
+To check for any syntax errors in our files, execute the following command:
+
+```bash
+sudo nginx -t
+```
+
+You will receive a warning about "ssl_stapling" being ignored. 
+
+![1695484738857](image/README/1695484738857.png)
+
+This warning is harmless, as it is caused by the fact that our self-signed certificate cannot use SSL stapling. However, our server can still encrypt connections correctly.
+
+Now, restart the Nginx service:
+
+```
+sudo systemctl restart nginx
+```
+
+### On client, test the website and resolve the client's browser warning
+
+Let's open Firefox and enter: `www.devopsproject.top`
+
+![1695485311833](image/README/1695485311833.png)
+
+You will encouter a warning from the browser. This is expected and normal because the website's certificate is not issued by a trusted certificate authority (CA). To fix this, we need to import our root CA's certificate that we created at the begining. 
+
+To do this, we need the `ca-cert.pem` file, which is the certificate of our root CA. To transfer this file from server to the client machine, use the following command:
+
+```
+# You need to exit current ssh session before executing this command
+scp dylan1@35.247.170.47:/etc/ssl/openssl/ca-cert.pem /home/haituyen/openssl
+```
+
+Next, open the browser setting and import this file:
+
+![1695486408599](image/README/1695486408599.png)
+
+At this time, re-enter `www.devopsproject.top` . You will no longer see the warning and the website's certificate wil be verified by the root CA named `The CA`
+
+![1695487244227](image/README/1695487244227.png)

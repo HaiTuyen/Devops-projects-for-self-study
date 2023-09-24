@@ -1,0 +1,15 @@
+server {
+
+        listen 80;
+        listen [::]:80;
+
+        server_name banana.devopsproject.top www.banana.devopsproject.top;
+        root /var/www/banana.devopsproject.top/html;
+        index index.html;
+        
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+

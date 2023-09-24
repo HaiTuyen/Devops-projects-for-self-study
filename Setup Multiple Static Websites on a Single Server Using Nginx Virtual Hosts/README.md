@@ -69,4 +69,30 @@ sudo ln -s /etc/nginx/sites-available/banana.devopsproject.top /etc/nginx/sites-
 
 ### Adjust the ownership and file permissions of new website directories
 
-In order to transfer websites file from client machine into website directories in server, you must change the ownership and file permissions of these directories into the username that you will use in `scp` command
+In order to transfer websites file from the client machine to website directories on the server, you must change the ownership and file permissions of those directories to the username that you will use in `scp` command
+
+```
+// Change ownership of new website directories to the non-root user
+sudo chown dylan1:dylan1 /var/www/apple.devopsproject.top/html/
+sudo chown dylan1:dylan1 /var/www/banana.devopsproject.top/html/
+
+// Change files permission of new website directories
+sudo chmod 777 /var/www/apple.devopsproject.top/html/
+sudo chmod 777 /var/www/banana.devopsproject.top/html/
+```
+
+### Transfering website files into new website directories using SCP
+
+Before executing the following commands, you must exit your current ssh connection with the server.
+
+```
+scp -r /home/haituyen/apple_website_files/* dylan1@devopsproject.top:/var/www/apple.devopsproject.top/html/
+scp -r /home/haituyen/banana_website_files/* dylan1@devopsproject.top:/var/www/banana.devopsproject.top/html/
+```
+
+After that, check nginx configuration file for any syntax errors and reload the nginx service. Execute the following command to do that:
+
+```
+sudo nginx -t
+sudo systemctl reload nginx
+```

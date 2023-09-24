@@ -522,3 +522,9 @@ Next, open the browser setting and import this file:
 At this time, re-enter `www.devopsproject.top` . You will no longer see the warning and the website's certificate wil be verified by the root CA named `The CA`
 
 ![1695487244227](image/README/1695487244227.png)
+
+To learn more about how SSL/TLS certificates work in the context of security, please visit [this page](https://dev.to/techschoolguru/a-complete-overview-of-ssl-tls-and-its-cryptographic-system-36pd). They will provide you with a very detailed explanation
+
+Thank you for considering my project, and I hope it proves to be a valuable asset for your needs.
+
+Happy coding and happy building! 👻👻👻

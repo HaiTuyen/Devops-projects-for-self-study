@@ -1,4 +1,4 @@
-# Setup A Static Website Using Niginx Project
+# Setup A Static Website Using Niginx
 
 This project marks my inaugural self-guided DevOps project, encompassing a step-by-step process for establishing a website. The project entails:
 

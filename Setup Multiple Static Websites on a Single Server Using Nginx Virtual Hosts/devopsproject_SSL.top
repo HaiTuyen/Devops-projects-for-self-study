@@ -1,0 +1,33 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name devopsproject.top www.devopsproject.top;
+#    root /var/www/devopsproject.top/html;
+#    index index.html;  
+
+#    location / {
+#        try_files $uri $uri/ =404;
+#    }
+
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+        listen 443 ssl;
+        server_name devopsproject.top www.devopsproject.top;
+
+        ssl_certificate /etc/letsencrypt/live/devopsproject.top/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/devopsproject.top/privkey.pem;
+
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        root /var/www/devopsproject.top/html;
+        index index.html;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+

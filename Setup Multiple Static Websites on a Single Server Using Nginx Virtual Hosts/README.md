@@ -6,11 +6,10 @@ The main purpose of this project is to make two websites with two subdomains of 
 
 1. Create two subdomains
 2. Host two website on a single server using Nginx server blocks
-3. Add the IP of the server as A record to the two subdomains.
-4. Validate the setup accessing the subdomains.
-5. Create a wildcard Letsencrypt SSL certificate for the root Domain.
-6. Configure wildcard SSL on Nginx for two websites.
-7. Validate the subdomain websites’ SSL using OpenSSL utility.
+3. Validate the setup accessing the subdomains.
+4. Create a wildcard Letsencrypt SSL certificate for the root Domain.
+5. Configure wildcard SSL on Nginx for two websites.
+6. Validate the subdomain websites’ SSL using OpenSSL utility.
 
 In this project, I assume that you have completed the "**Setup A Static Website Using Nginx**" project. Before proceeding with the following steps, please make sure that you have read all of the steps for setting up Ubuntu server and Nginx web server, including creating a virtual machine, installing Ubuntu Server, configuring both server and firewall, installing Nginx, and configuring Nginx.
 
@@ -96,3 +95,15 @@ After that, check nginx configuration file for any syntax errors and reload the 
 sudo nginx -t
 sudo systemctl reload nginx
 ```
+
+## Validate the setup accessing the subdomains.
+
+Up to this point, everything should be okay. Let's open a browser and visit the two websites that you set up in the previous steps.
+
+![1695609889706](image/README/1695609889706.png)
+
+![1695609931719](image/README/1695609931719.png)
+
+Currently, our two websites are accessible on the internet. 
+
+Nevertheless, they continue to ultilize the HTTP protocol for communication, which lacks security measures. Therefore, the forthcoming step involves implementing the HTTPS protocol.

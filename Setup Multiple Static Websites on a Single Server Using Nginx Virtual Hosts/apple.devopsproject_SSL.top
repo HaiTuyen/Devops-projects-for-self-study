@@ -2,7 +2,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name apple.devopsproject.top www.apple.devopsproject.top;
+        server_name apple.devopsproject.top;
 
         return 301 https://$server_name$request_uri;
 #       root /var/www/apple.devopsproject.top/html;
@@ -14,7 +14,7 @@ server {
 
 server {
         listen 443 ssl;
-        server_name apple.devopsproject.top www.apple.devopsproject.top;
+        server_name apple.devopsproject.top;
 
         ssl_certificate /etc/letsencrypt/live/devopsproject.top/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/devopsproject.top/privkey.pem;

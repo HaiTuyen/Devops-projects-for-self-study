@@ -3,7 +3,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name apple.devopsproject.top www.apple.devopsproject.top;
+        server_name apple.devopsproject.top;
         root /var/www/apple.devopsproject.top/html;
         index index.html;
         

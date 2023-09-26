@@ -15,7 +15,7 @@ Now, let's dive into this project! 🔥🔥🔥
 
 ## Create two subdomains
 
-Follow these steps to complete this part: 
+Follow these steps to complete this part:
 
 * Log in to your domain registrar's control panel.
 * Navigate to the DNS settings for your domain.
@@ -102,16 +102,15 @@ Up to this point, everything should be okay. Let's open a browser and visit the 
 
 ![1695609931719](image/README/1695609931719.png)
 
-Currently, our two websites are accessible on the internet. 
+Currently, our two websites are accessible on the internet.
 
 Nevertheless, they continue to ultilize the HTTP protocol for communication, which lacks security measures. Therefore, the forthcoming step involves implementing the HTTPS protocol.
-
 
 ## Create a wildcard Letsencrypt SSL certificate for the root Domain and configure the Nginx configuration files of all websites.
 
 ### What is a wildcard ?
 
-According to [certbot.eff.org](https://certbot.eff.org/), 
+According to [certbot.eff.org](https://certbot.eff.org/),
 
 > A wildcard certificate is a certificate that includes one or more names starting with `*.`. Browsers will accept any label in place of the asterisk (`*`). For example, a certificate for `*.example.com` will be valid for `www.example.com`, `mail.example.com`, `hello.example.com`, and `goodbye.example.com`.
 >
@@ -121,7 +120,7 @@ According to [certbot.eff.org](https://certbot.eff.org/),
 
 ### Remove certbot-auto and any Certbot OS packages installed before
 
-Certbot can be installed using OS packages manager like `apt`, `dnf`, `yum` or `snap` . The exact command to remove them depends on each OS packages manager: 
+Certbot can be installed using OS packages manager like `apt`, `dnf`, `yum` or `snap` . The exact command to remove them depends on each OS packages manager:
 
 ```
 sudo apt-get remove certbot
@@ -132,7 +131,7 @@ sudo snap remove certbot
 
 ### Install new Certbot
 
-To install Certbot in our Nginx webserver, use the following command: 
+To install Certbot in our Nginx webserver, use the following command:
 
 ```
 sudo apt install certbot python3-certbot-nginx
@@ -140,7 +139,6 @@ sudo apt install certbot python3-certbot-nginx
 
 * `apt`: This is the package management tool for Ubuntu and Debian-based Linux distributions. It is used to install, upgrade, and manage software packages.
 * `install`: This is the subcommand for `apt` that instructs it to install the specified packages.
-
 * `certbot`: This is the main Certbot package, which is used for managing Let's Encrypt SSL certificates.
 * `python3-certbot-nginx`: This is the Certbot plugin for Nginx. It integrates Certbot with the Nginx web server, making it easier to obtain and manage SSL certificates for Nginx-configured websites.
 
@@ -195,7 +193,7 @@ For each configuration file, copy the content of following files in this project
 
 ### Test the Nginx configuration and reload Nginx service
 
-Execute the following command to do this: 
+Execute the following command to do this:
 
 ```
 sudo nginx -t
@@ -211,6 +209,11 @@ Let's open a browser and enter the root domain name first, then the two subdomai
 ![1695632307286](image/README/1695632307286.png)
 
 ![1695632347028](image/README/1695632347028.png)
+
+## Key Knowledge
+
+1. What is subdomain ?
+
 
 ## Conclusion
 

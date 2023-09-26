@@ -2,7 +2,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name banana.devopsproject.top www.banana.devopsproject.top;
+        server_name banana.devopsproject.top;
 
 #       root /var/www/banana.devopsproject.top/html;
 #       index index.html;
@@ -16,7 +16,7 @@ server {
 
 server {
         listen 443 ssl;
-        server_name banana.devopsproject.top www.banana.devopsproject.top;
+        server_name banana.devopsproject.top;
 
         ssl_certificate /etc/letsencrypt/live/devopsproject.top/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/devopsproject.top/privkey.pem;

@@ -114,9 +114,9 @@ Currently, when I access to the server using `ssh <external ip>` command, I logg
 
 ```
 # Copy entire .ssh directory (include default public key file) of default account to new user home's directory  
-cp -r ~/.ssh /home/<username>
+sudo cp -r ~/.ssh /home/<username>
 # Change ownership of that directory (and everything inside it) to the specified username:groupname
-chown -R sammy:sammy /home/sammy/.ssh
+sudo chown -R sammy:sammy /home/sammy/.ssh
 ```
 
 Now, you can open up a new ternimal session and log in via SSH with your new user
@@ -128,3 +128,5 @@ ssh <new_username>@<server_external_IP>
 ![1695876394273](image/README/1695876394273.png)
 
 Execute these steps for each server, you will have completed this part. 💪💪💪
+
+## Set up static websites on two servers using Nginx. Make a small change in the index.html file of one of the websites to differentiate between two servers

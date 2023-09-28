@@ -17,7 +17,7 @@ List of steps:
 
 You can use any cloud service, such as AWS, Google Cloud, or Azure. In this project, I will use Google Cloud.
 
-To deploy three servers, simply create three virtual machines (VMs) and and install an operating system on each one. In this project, I will use Debian 10 as the operating system.
+To deploy three servers, simply create three virtual machines (VMs) and and install an operating system on each one. In this project, I will use **Debian 10** as the operating system.
 
 ![1695872643422](image/README/1695872643422.png)
 

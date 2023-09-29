@@ -290,3 +290,13 @@ Log in to your domain registrar's control panel and add the A record for each se
 ## Try accessing the website.
 
 Now, open a web browser and navigate to the load balancer server domain name: `loadbalancer.devopsproject.top`. You should see the following results:
+
+* Result of the first time access :
+
+![1695995108455](image/README/1695995108455.png)
+
+* Result of the second time access :
+
+![1695995212152](image/README/1695995212152.png)
+
+* And so on

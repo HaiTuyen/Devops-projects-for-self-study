@@ -132,9 +132,9 @@ To avoid the need to switch users every ssh connect session, it is advisable to 
 
 ```
 # Copy entire .ssh directory (include default public key file) of default account to new user home's directory  
-sudo cp -r ~/.ssh /home/<username>
+sudo cp -r ~/.ssh /home/u1
 # Change ownership of that directory (and everything inside it) to the specified username:groupname
-sudo chown -R sammy:sammy /home/sammy/.ssh
+sudo chown -R u1:u1 /home/u1/.ssh
 ```
 
 Now, you can open up a new ternimal session and log in via SSH with your new user

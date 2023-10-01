@@ -49,27 +49,58 @@ During the first-time connection, you might receive a warning, but don't worry; 
 
 ### Configuring the server
 
-Next, it's essential to create a new user that have many administrative privileges to facilitate various tasks while minimizing security risk. This user is commonly referred to as a non-root user.
+To increase the security and usability of your server and make a solid foundation for subsequent actions, you must follow some configuration steps:
 
-Here's how you can create a non-root user:
+**Step 1:** Log in server using SSH protocol:
 
-First, use the following command to add a new user, replacing `<username>` with your chosen username:
-
-```php
-sudo adduser <username>
+```
+ssh <server_external_IP>
 ```
 
-After adding the new user, exit the current SSH connection session:
+**Step 2:** Create a non-root user
 
-```plaintext
-exit
+```
+sudo adduser dylan1
 ```
 
-Reconnect to the server using the new username and the server's external Ip address:
+* `u1` is new username I want to create.
 
-```plaintext
+> It is highly recommended to create a non-root user when configuring an Debian server, and in fact, it's considered a best practice for security reasons. When you initially set up an Debian server, it often comes with a default user named "root" with full administrative privileges. However, using the root account for everyday tasks can pose security risks.
+
+**Step 3:** Grant administrative privileges to new user
+
+```
+sudo usermod -aG sudo dylan1
+```
+
+* `sudo`: This is a command used to execute another command with superuser (root) privileges. It is often required for administrative tasks.
+* `usermod`: This is a command used to modify user account properties.
+* `-aG sudo`: These are options passed to the `usermod` command:
+  * `-a`: It stands for "**append**" and is used to add the user to the specified group without removing them from any other groups.
+  * `-G sudo`: This specifies the group to which you want to add the user. In this case, you are adding the user to the "sudo" group.
+* `u1`: This is the username of the user you want to add to the "sudo" group.
+
+To display the groups to which an username belongs on a Linux system, use the following command:
+
+```
+group <username>
+```
+
+**Step 4:** To avoid the need to switch users every ssh connect session, it is advisable to access the server directly as a new user intead of root. Please follow these commands (Using SSH keys methods for accessing) to achive this:
+
+```
+# Copy entire .ssh directory (include default public key file) of default account to new user home's directory  
+sudo cp -r ~/.ssh /home/dylan1 
+# Change ownership of that directory (and everything inside it) to the specified username:groupname
+sudo chown -R dylan1:dylan1 /home/dylan1 /.ssh
+```
+
+Now, you can open up a new ternimal session and log in via SSH with your new user
+
+```
 ssh <new_username>@<server_external_IP>
 ```
+
 
 ## Initializing firewall rules for enhanced security
 

@@ -256,7 +256,7 @@ server {
    * `location / { ... }`: Defines how Nginx should process requests for the specified location (`/` in this case). This block is used for reverse proxying.
    * `proxy_pass http://backend;`: This line instructs Nginx to forward incoming requests to the upstream server group named `backend`. You should have an `upstream` block defined elsewhere in your configuration specifying the servers to which Nginx should distribute the requests.
 
-Remove the symlink of default server block configuration file: 
+Remove the symlink of default server block configuration file:
 
 ```
 sudo rm /etc/nginx/sites-enabled/default
@@ -303,56 +303,76 @@ When no load balancing method is specified in the `upstream` block, Nginx implem
 
 ```nginx
 upstream backend {
-   # no load balancing method is specified for Round Robin
-   server backend1.example.com;
-   server backend2.example.com;
+	# no load balancing method is specified for Round Robin
+	server apple.devopsproject.top;
+	server banana.devopsproject.top;
 }
 ```
 
-### Least Connections
+* ***How does Round Robin algorithm work ?***
+
+  > **Round‑robin load balancing** is one of the simplest methods for distributing client requests across a group of servers. Going down the list of servers in the group, the round‑robin load balancer forwards a client request to each server in turn. When it reaches the end of the list, the load balancer loops back and goes down the list again (sends the next request to the first listed server, the one after that to the second server, and so on).
+  >
+
+### Hash
 
 ```nginx
 upstream backend {
-    least_conn;
-    server backend1.example.com;
-    server backend2.example.com;
+	hash $scheme$request_uri;
+	server apple.devopsproject.top;
+	server banana.devopsproject.top;
 }
 ```
+
+* ***How does Hash algorithm work ?***
+
+  > With the Hash method, for each request the load balancer calculates a hash that is based on the combination of text and [NGINX variables](https://nginx.org/en/docs/varindex.html) you specify, and associates the hash with one of the servers. It sends all requests with that hash to that server, so this method establishes a basic kind of [session persistence](https://www.nginx.com/products/nginx/load-balancing/#session-persistence).
+  > In the above example, the `hash` directive uses the scheme (**http** or  **https** ) and full URI of the request as the basis for the hash
+  >
 
 ### IP Hash
 
 ```nginx
 upstream backend {
-    ip_hash;
-    server backend1.example.com;
-    server backend2.example.com;
+	ip_hash;
+	server apple.devopsproject.top;
+	server banana.devopsproject.top;
 }
 ```
 
-### Generic Hash
+* ***What is IP Hash ?***
+
+  > IP Hash (available for HTTP only) is a predefined variant of the Hash method, in which the hash is based on the clients IP address. You set it with the `ip_hash` directive.
+  >
+  > If the client has an IPv6 address, the hash is based on the entire address. If it has an IPv4 address, the hash is based on just the first three octets of the address. This is designed to optimize for ISP clients that are assigned IP addresses dynamically from a subnetwork (/24) range. In case of reboot or reconnection, the clients address often changes to a different one in the /24 network range, but the connection still represents the same client, so there’s no reason to change the mapping to the server.
+  >
+  > If, however, the majority of the traffic to your site is coming from clients on the same /24 network, IP Hash doesnt make sense because it maps all clients to the same server. In that case (or if you want to hash on all four octets for another reason), instead use the Hash method with the `$remote_addr` variable.
+  >
+  > ```
+  > hash $remote_addr;
+  > ```
+  >
+
+### Least Connections
+
+Using the `least_conn` directive to use this algorithm:
 
 ```nginx
 upstream backend {
-    hash $request_uri consistent;
-    server backend1.example.com;
-    server backend2.example.com;
+	least_conn;
+	server apple.devopsproject.top;
+	server banana.devopsproject.top;
 }
 ```
 
-### Random
+* ***How does Least Connections algorithm work ?***
+  > With the Least Connections method, the load balancer compares the current number of active connections it has to each server, and sends the request to the server with the fewest connections
+  >
 
-```nginx
-upstream backend {
-    random two least_time=last_byte;
-    server backend1.example.com;
-    server backend2.example.com;
-    server backend3.example.com;
-    server backend4.example.com;
-}
-```
+To understand more about load balancing technique in Nginx, read this article: [Choosing an NGINX Plus Load‑Balancing Technique - NGINX](https://www.nginx.com/blog/choosing-nginx-plus-load-balancing-techniques/#Pros-Cons-and-Use-Cases)
 
-Each request will be passed to a randomly selected server. If the `two` parameter is specified, first, NGINX randomly selects two servers taking into account server weights, and then chooses one of these servers using the specified method:
+## Conclusion
 
-* `least_conn` – The least number of active connections
-* `least_time=header` (NGINX Plus) – The least average time to receive the response header from the server ([`$upstream_header_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_header_time))
-* `least_time=last_byte` (NGINX Plus) – The least average time to receive the full response from the server ([`$upstream_response_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_response_time))
+Thank you for considering my project, and I hope it proves to be a valuable asset for your needs.
+
+Happy coding and happy building! 👻👻👻

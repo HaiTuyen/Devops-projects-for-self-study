@@ -1,6 +1,6 @@
 # Setup Load Balancing for Static Website Using Nignx
 
-List of steps: 
+List of steps:
 
 1. Deploy three servers
 2. Install Nginx on three servers
@@ -8,12 +8,12 @@ List of steps:
 4. Configure Nginx on the third server to load and balance traffic between two static websites.
 5. Add the Nginx Load balancer IP to the DNS A record.
 6. Try accessing the website. Every time you reload the website you should see a different index.html.
-7. Try different Nginx load-balancing algorithms and options.
+7. Gain a deeper understanding of Nginx load balancing algorithms.
 8. Understand L7 load balancing.
 
 ## Deploy three servers
 
-### Create VMs 
+### Create VMs
 
 You can use any cloud service, such as AWS, Google Cloud, or Azure. In this project, I will use Google Cloud.
 
@@ -53,7 +53,7 @@ During the first-time connection, you might receive a warning, but don't worry; 
 
 ### Configure three servers
 
-To increase the security and usability of your server and make a solid foundation for subsequent actions, you must follow some configuration steps: 
+To increase the security and usability of your server and make a solid foundation for subsequent actions, you must follow some configuration steps:
 
 **Step 1:** Log in server using SSH protocol:
 
@@ -84,7 +84,7 @@ sudo usermod -aG sudo u1
   * `-G sudo`: This specifies the group to which you want to add the user. In this case, you are adding the user to the "sudo" group.
 * `u1`: This is the username of the user you want to add to the "sudo" group.
 
-To display the groups to which an username belongs on a Linux system, use the following command: 
+To display the groups to which an username belongs on a Linux system, use the following command:
 
 ```
 group <username>
@@ -96,14 +96,14 @@ As you can see, user 'u3' belongs to the u3 group (created by default) and sudo 
 
 **Step 4:** Set up basic Firewall
 
-To install UFW firewall software, execute the following commands: 
+To install UFW firewall software, execute the following commands:
 
 ```
 sudo apt update
 sudo apt install ufw
 ```
 
-To list all available application profiles, execute the following commands: 
+To list all available application profiles, execute the following commands:
 
 ```
 sudo ufw app list
@@ -115,7 +115,7 @@ To make sure that the firewall allows SSH connections so that we can log back in
 sudo allow OpenSSH
 ```
 
-Then, we need to enable the firewall: 
+Then, we need to enable the firewall:
 
 ```
 sudo ufw enable
@@ -146,7 +146,7 @@ ssh <new_username>@<server_external_IP>
 
 Execute these steps for each server, you will have completed this part. 💪💪💪
 
-## Install Nginx on three servers. 
+## Install Nginx on three servers.
 
 **First** update your local package lists:
 
@@ -178,7 +178,7 @@ systemctl status nginx
 
 > This  command is used to check the status of the Nginx web server on a Linux system using the `systemd` init system.
 
-Now, open a browser the external IP address of your servers, the result should be like this: 
+Now, open a browser the external IP address of your servers, the result should be like this:
 
 ![1695886360965](image/README/1695886360965.png)
 
@@ -186,7 +186,7 @@ Execute these steps for each server, you will have completed this part. 💪💪
 
 ## Set up static websites on two servers using Nginx
 
-SSH to server 1 and server 2 respectly, then execute the following commands: 
+SSH to server 1 and server 2 respectly, then execute the following commands:
 
 * Change the ownership of the `/var/www/html/` directory into the user `u1` and the group `u1`:
 
@@ -224,7 +224,6 @@ SSH to server 1 and server 2 respectly, then execute the following commands:
   sudo systemctl reload nginx
   ```
 
-
 ## Configure Nginx on the third server to load and balance traffic between two static websites.
 
 Open the Nginx configuration files:
@@ -237,23 +236,14 @@ Find the `http` block in your Nginx configuration file and add the following cod
 
 ```
 upstream backend {
-    server apple.devopsproject.top;
-    server banana.devopsproject.top;
+	server apple.devopsproject.top;
+	server banana.devopsproject.top;
 }
-
-```
-
-Open the defaul server block's configuration file and modify its to match the following code:
-
-```
 server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-	server_name loadbalancer.devopsproject.top;
-        location / {
-                proxy_pass http://backend;
-        }
+	listen 80;
+	location / {
+		proxy_pass http://backend;
+	}
 }
 ```
 
@@ -266,6 +256,12 @@ server {
    * `location / { ... }`: Defines how Nginx should process requests for the specified location (`/` in this case). This block is used for reverse proxying.
    * `proxy_pass http://backend;`: This line instructs Nginx to forward incoming requests to the upstream server group named `backend`. You should have an `upstream` block defined elsewhere in your configuration specifying the servers to which Nginx should distribute the requests.
 
+Remove the symlink of default server block configuration file: 
+
+```
+sudo rm /etc/nginx/sites-enabled/default
+```
+
 Finally, check for syntax errors in the Nginx configuration file and reload Nginx:
 
 ```
@@ -273,17 +269,15 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-Because no load‑balancing algorithm is specified in the `upstream` block, NGINX uses the default algorithm, **Round Robin:** 
+Because no load‑balancing algorithm is specified in the `upstream` block, NGINX uses the default algorithm, **Round Robin:**
 
 > * When a client makes a request to your Nginx server, the Round Robin algorithm determines which backend server should handle the request.
 > * The first request goes to `backend1.example.com`, the second to `backend2.example.com`, the third to `backend3.example.com`, and so on.
->
 > * After reaching the last server, it goes back to the first one, creating a circular sequence.
-
 
 ## Add the DNS A record for each server
 
-Log in to your domain registrar's control panel and add the A record for each server. 
+Log in to your domain registrar's control panel and add the A record for each server.
 
 ![1695994886246](image/README/1695994886246.png)
 
@@ -300,3 +294,65 @@ Now, open a web browser and navigate to the load balancer server domain name: `l
 ![1695995212152](image/README/1695995212152.png)
 
 * And so on
+
+## Choose a load balancing algorithms
+
+### Round Robin
+
+When no load balancing method is specified in the `upstream` block, Nginx implement Round Robin by default:
+
+```nginx
+upstream backend {
+   # no load balancing method is specified for Round Robin
+   server backend1.example.com;
+   server backend2.example.com;
+}
+```
+
+### Least Connections
+
+```nginx
+upstream backend {
+    least_conn;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+### IP Hash
+
+```nginx
+upstream backend {
+    ip_hash;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+### Generic Hash
+
+```
+upstream backend {
+    hash $request_uri consistent;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+### Random
+
+```
+upstream backend {
+    random two least_time=last_byte;
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com;
+    server backend4.example.com;
+}
+```
+
+Each request will be passed to a randomly selected server. If the `two` parameter is specified, first, NGINX randomly selects two servers taking into account server weights, and then chooses one of these servers using the specified method:
+
+* `least_conn` – The least number of active connections
+* `least_time=header` (NGINX Plus) – The least average time to receive the response header from the server ([`$upstream_header_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_header_time))
+* `least_time=last_byte` (NGINX Plus) – The least average time to receive the full response from the server ([`$upstream_response_time`](https://nginx.org/en/docs/http/ngx_http_upstream_module.html#var_upstream_response_time))

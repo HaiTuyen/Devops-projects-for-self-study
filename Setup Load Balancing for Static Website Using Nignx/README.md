@@ -1,15 +1,16 @@
 # Setup Load Balancing for Static Website Using Nignx
 
-List of steps:
+The main purpose of this project is to learn about Load Balancing, a technique to distribute incoming requests to a group of servers. We will deploy three server in total, two of them will be used for hosting websites and the remaining server will acts as a load balancer. Nginx supports some load balancing algorithms, such as Round Robin, Hash, IP Hash and Least Connections. We will discuss about them in this project.
 
-1. Deploy three servers
-2. Install Nginx on three servers
-3. Set up static websites on two servers using Nginx. Make a small change in the index.html file of one of the websites to differentiate between two servers.
-4. Configure Nginx on the third server to load and balance traffic between two static websites.
-5. Add the Nginx Load balancer IP to the DNS A record.
-6. Try accessing the website. Every time you reload the website you should see a different index.html.
-7. Gain a deeper understanding of Nginx load balancing algorithms.
-8. Understand L7 load balancing.
+Here's the key steps of this project:
+
+1. [Deploy three servers](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#deploy-three-servers)
+2. [Install Nginx on three servers](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#install-nginx-on-three-servers)
+3. [Set up static websites on two servers using Nginx. Make a small change in the index.html file of one of the websites to differentiate between two servers.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#set-up-static-websites-on-two-servers-using-nginx)
+4. [Configure Nginx on the third server to load and balance traffic between two static websites.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#configure-nginx-on-the-third-server-to-load-and-balance-traffic-between-two-static-websites)
+5. [Add the Nginx Load balancer IP to the DNS A record.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#add-the-dns-a-record-for-each-server)
+6. [Try accessing the website. Every time you reload the website you should see a different index.html.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#try-accessing-the-website)
+7. [Choose a load balancing algorithm.](https://github.com/HaiTuyen/Devops-projects-for-self-study/tree/main/Setup%20Load%20Balancing%20for%20Static%20Website%20Using%20Nignx#choose-a-load-balancing-algorithms)
 
 ## Deploy three servers
 
@@ -295,7 +296,7 @@ Now, open a web browser and navigate to the load balancer server domain name: `l
 
 * And so on
 
-## Choose a load balancing algorithms
+## Choose a load balancing algorithm
 
 ### Round Robin
 

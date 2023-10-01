@@ -331,7 +331,7 @@ upstream backend {
 
 ### Generic Hash
 
-```
+```nginx
 upstream backend {
     hash $request_uri consistent;
     server backend1.example.com;
@@ -341,7 +341,7 @@ upstream backend {
 
 ### Random
 
-```
+```nginx
 upstream backend {
     random two least_time=last_byte;
     server backend1.example.com;
